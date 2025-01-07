@@ -46,6 +46,8 @@ pipeline {
                     withCredentials([file(credentialsId: 'jenkins-kubeconfig', variable: 'KUBECONFIG')]) {
                         // Use a location inside the workspace for storing the kubeconfig temporarily
                         sh 'cp $KUBECONFIG ${WORKSPACE}/kubeconfig'
+
+                        // Use envsubst to replace environment variables in the deploy.yaml
                         sh '''
                         envsubst < deploy1.yaml | kubectl apply -f - --kubeconfig ${WORKSPACE}/kubeconfig
                         '''
