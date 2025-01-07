@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Building Docker image for FastAPI app'
                 script {
-                    sudo docker.build("${DOCKER_IMAGE}:latest")
+                    docker.build("${DOCKER_IMAGE}:latest")
                 }
             }
         }
@@ -30,8 +30,8 @@ pipeline {
             steps {
                 echo 'Pushing Docker image to Docker registry'
                 script {
-                    sudo docker.withRegistry("https://${DOCKER_REGISTRY}") {
-                        sudo docker.image("${DOCKER_IMAGE}:latest").push()
+                    docker.withRegistry("https://${DOCKER_REGISTRY}") {
+                        docker.image("${DOCKER_IMAGE}:latest").push()
                     }
                 }
             }
