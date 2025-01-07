@@ -48,9 +48,7 @@ pipeline {
                         sh 'cp $KUBECONFIG ${WORKSPACE}/kubeconfig'
 
                         // Use envsubst to replace environment variables in the deploy.yaml
-                        sh '''
-                        // envsubst < deploy1.yaml | kubectl apply -f - --kubeconfig ${WORKSPACE}/kubeconfig
-                        kubectl apply -f deploy1.yaml -n wireguard
+                        envsubst < deploy1.yaml | kubectl apply -f - --kubeconfig ${WORKSPACE}/kubeconfig
                         '''
                     }
                 }
