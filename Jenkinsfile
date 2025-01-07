@@ -9,13 +9,13 @@ pipeline {
         K8S_NAMESPACE = "default"
     }
 
-    stages {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out the code from Git repository'
-                git 'https://github.com/yourusername/your-repo.git'
+                git credentialsId: 'Jaison_PAT', url: 'https://github.com/jaison24/Kubernetes_py_app.git'
             }
         }
+
 
         stage('Build Docker Image') {
             steps {
