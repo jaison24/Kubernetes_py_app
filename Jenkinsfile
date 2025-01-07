@@ -44,12 +44,12 @@ pipeline {
                 script {
                     // Access the kubeconfig file from Jenkins secrets and store it in a temporary location
                     withCredentials([file(credentialsId: 'jenkins-kubeconfig', variable: 'KUBECONFIG')]) {
-                        // Copy the kubeconfig to a temporary file path in the workspace
-                        sh 'cp $KUBECONFIG /tmp/kubeconfig'
-                        
+                        // Use a location inside the workspace for storing the kubeconfig temporarily
+                        sh 'cp $KUBECONFIG ${WORKSPACE}/kubeconfig'
+
                         // Use envsubst to replace environment variables in the deploy.yaml
                         sh '''
-                        envsubst < deploy.yaml | kubectl apply -f - --kubeconfig /tmp/kubeconfig
+                        envsubst < deploy.yaml | kubectl apply -f - --kubeconfig ${WORKSPACE}/kubeconfig
                         '''
                     }
                 }
