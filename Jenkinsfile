@@ -26,6 +26,7 @@ pipeline {
             }
         }
 
+        // Optional: Uncomment this section if you want to push the Docker image to Docker Hub
         // stage('Push Docker Image to Registry') {
         //     steps {
         //         echo 'Pushing Docker image to Docker registry'
@@ -41,10 +42,14 @@ pipeline {
             steps {
                 echo 'Deploying to Kubernetes cluster'
                 script {
-                    sh '''
-                    kubectl apply -f deploy.yaml --kubeconfig /tmp/kubeconfig
-                
-                    '''
+                    // Access the kubeconfig file from Jenkins secrets and store it in a temporary location
+                    withCredentials([file(credentialsId: 'jenkins-kubeconfig', variable: 'KUBECONFIG')]) {
+                        // Copy the kubeconfig to a temporary file path in the workspace
+                        sh 'cp $KUBECONFIG /tmp/kubeconfig'
+                        
+                        // Apply the Kubernetes deployment using the kubeconfig
+                        sh 'kubectl apply -f deploy.yaml --kubeconfig /tmp/kubeconfig'
+                    }
                 }
             }
         }
