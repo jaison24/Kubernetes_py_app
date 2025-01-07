@@ -26,16 +26,16 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image to Registry') {
-            steps {
-                echo 'Pushing Docker image to Docker registry'
-                script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'jaison-docker-creds') {
-                        docker.image("${DOCKER_IMAGE}:latest").push()
-                    }
-                }
-            }
-        }
+        // stage('Push Docker Image to Registry') {
+        //     steps {
+        //         echo 'Pushing Docker image to Docker registry'
+        //         script {
+        //             docker.withRegistry("https://${DOCKER_REGISTRY}", 'jaison-docker-creds') {
+        //                 docker.image("${DOCKER_IMAGE}:latest").push()
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Deploy to Kubernetes') {
             steps {
