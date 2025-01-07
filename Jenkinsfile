@@ -42,40 +42,8 @@ pipeline {
                 echo 'Deploying to Kubernetes cluster'
                 script {
                     sh '''
-                    kubectl apply -f - <<EOF
-                    apiVersion: apps/v1
-                    kind: Deployment
-                    metadata:
-                      name: ${K8S_DEPLOYMENT}
-                    spec:
-                      replicas: 1
-                      selector:
-                        matchLabels:
-                          app: fastapi-app
-                      template:
-                        metadata:
-                          labels:
-                            app: fastapi-app
-                        spec:
-                          containers:
-                          - name: fastapi-container
-                            image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
-                            ports:
-                            - containerPort: 8000
-                    ---
-                    apiVersion: v1
-                    kind: Service
-                    metadata:
-                      name: ${K8S_SERVICE}
-                    spec:
-                      selector:
-                        app: fastapi-app
-                      ports:
-                        - protocol: TCP
-                          port: 80
-                          targetPort: 8000
-                      type: ClusterIP
-                    EOF
+                    kubectl apply -f deploy.yaml
+                
                     '''
                 }
             }
