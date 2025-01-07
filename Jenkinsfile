@@ -47,8 +47,10 @@ pipeline {
                         // Copy the kubeconfig to a temporary file path in the workspace
                         sh 'cp $KUBECONFIG /tmp/kubeconfig'
                         
-                        // Apply the Kubernetes deployment using the kubeconfig
-                        sh 'kubectl apply -f deploy.yaml --kubeconfig /tmp/kubeconfig'
+                        // Use envsubst to replace environment variables in the deploy.yaml
+                        sh '''
+                        envsubst < deploy.yaml | kubectl apply -f - --kubeconfig /tmp/kubeconfig
+                        '''
                     }
                 }
             }
