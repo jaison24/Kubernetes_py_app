@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${K8S_DEPLOYMENT}
+  labels:
+    app: fastapi-app
+spec:
+  replicas: 3  # Adjust the replica count based on load requirements
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      containers:
+      - name: fastapi-container
+        image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
+        ports:
+        - containerPort: 8000
+        # env:
+        # - name: ENVIRONMENT
+        #   value: "production"  # Example environment variable
+        # resources:
+        #   requests:
+        #     memory: "128Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "512Mi"
+        #     cpu: "500m"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health  # Endpoint for readiness check
+        #     port: 8000
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health  # Endpoint for liveness check
+        #     port: 8000
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${K8S_SERVICE}
+  labels:
+    app: fastapi-app
+spec:
+  selector:
+    app: fastapi-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer  # Use LoadBalancer for external access
