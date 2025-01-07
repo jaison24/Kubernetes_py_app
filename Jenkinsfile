@@ -42,7 +42,7 @@ pipeline {
                 echo 'Deploying to Kubernetes cluster'
                 script {
                     sh '''
-                    kubectl apply -f deploy.yaml --validate=false
+                    kubectl apply -f deploy.yaml --kubeconfig /tmp/kubeconfig
                 
                     '''
                 }
