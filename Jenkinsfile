@@ -13,7 +13,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out the code from Git repository'
-                git credentialsId: 'Jaison_PAT', url: 'https://github.com/jaison24/Kubernetes_py_app.git'
+                git credentialsId: 'Jaison_PAT', url: 'https://github.com/jaison24/Kubernetes_py_app.git', branch: 'main'
             }
         }
 
