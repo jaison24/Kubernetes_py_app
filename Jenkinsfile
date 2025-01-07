@@ -47,7 +47,7 @@ pipeline {
                         // Use a location inside the workspace for storing the kubeconfig temporarily
                         sh 'cp $KUBECONFIG ${WORKSPACE}/kubeconfig'
                         sh '''
-                        envsubst < deploy.yaml | kubectl apply -f - --kubeconfig ${WORKSPACE}/kubeconfig
+                        envsubst < deploy1.yaml | kubectl apply -f - --kubeconfig ${WORKSPACE}/kubeconfig
                         '''
                     }
                 }
